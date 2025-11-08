@@ -1,0 +1,5 @@
+{
+  "name": "HealthJobFinder",
+  "description": "A global aggregator for healthcare job listings, filtered by country, qualification, and category, powered by Gemini.",
+  "requestFramePermissions": []
+}
