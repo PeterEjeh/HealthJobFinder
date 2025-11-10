@@ -1,7 +1,7 @@
 import React from 'react';
-import type { Job, GroundingSource, Tab, AppError } from '../types';
-import { JobCard } from './JobCard';
-import { Resources } from './Resources';
+import type { Job, GroundingSource, Tab, AppError } from '../types.ts';
+import { JobCard } from './JobCard.tsx';
+import { Resources } from './Resources.tsx';
 
 interface ResultsPanelProps {
   jobs: Job[];

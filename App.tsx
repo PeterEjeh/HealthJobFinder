@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FilterPanel } from './components/FilterPanel';
-import { ResultsPanel } from './components/ResultsPanel';
-import { Header } from './components/Header';
-import type { FilterState, Job, GroundingSource, Tab, AppError } from './types';
-import { findJobs, getMarketInsights } from './services/geminiService';
-import { JOB_ROLES, COUNTRIES } from './constants';
+import { FilterPanel } from './components/FilterPanel.tsx';
+import { ResultsPanel } from './components/ResultsPanel.tsx';
+import { Header } from './components/Header.tsx';
+import type { FilterState, Job, GroundingSource, Tab, AppError } from './types.ts';
+import { findJobs, getMarketInsights } from './services/geminiService.ts';
+import { JOB_ROLES, COUNTRIES } from './constants.ts';
 
 const App: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({

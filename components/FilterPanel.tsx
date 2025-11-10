@@ -1,5 +1,5 @@
 import React from 'react';
-import type { FilterState } from '../types';
+import type { FilterState } from '../types.ts';
 
 interface FilterPanelProps {
   filters: FilterState;
