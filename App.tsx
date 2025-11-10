@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { FilterPanel } from './components/FilterPanel';
 import { ResultsPanel } from './components/ResultsPanel';
 import { Header } from './components/Header';
-import type { FilterState, Job, GroundingSource, Tab } from './types';
+import type { FilterState, Job, GroundingSource, Tab, AppError } from './types';
 import { findJobs, getMarketInsights } from './services/geminiService';
 import { JOB_ROLES, COUNTRIES } from './constants';
 
@@ -17,7 +17,7 @@ const App: React.FC = () => {
   const [insights, setInsights] = useState<string>('');
   const [groundingSources, setGroundingSources] = useState<GroundingSource[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<AppError | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>('listings');
 
   useEffect(() => {
@@ -58,8 +58,24 @@ const App: React.FC = () => {
         setGroundingSources(result.sources);
       }
     } catch (err) {
-      console.error(err);
-      setError(err instanceof Error ? err.message : 'An unknown error occurred.');
+      console.error("Search failed:", err);
+      let appError: AppError;
+
+      if (err instanceof Error) {
+        const message = err.message.toLowerCase();
+        if (message.includes('json') || message.includes('markdown')) {
+          appError = { type: 'parsing', message: "The model's response was improperly formatted. Please try again." };
+        } else if (message.includes('fetch') || message.includes('network')) {
+          appError = { type: 'network', message: "Failed to connect. Please check your internet connection." };
+        } else if (message.includes('api')) { // This could be for API key errors or service unavailable
+          appError = { type: 'api', message: "The AI service is currently unavailable or misconfigured. Please try again later." };
+        } else {
+          appError = { type: 'unknown', message: err.message };
+        }
+      } else {
+        appError = { type: 'unknown', message: 'An unexpected error occurred.' };
+      }
+      setError(appError);
     } finally {
       setIsLoading(false);
     }

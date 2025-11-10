@@ -18,4 +18,9 @@ export interface GroundingSource {
   uri: string;
 }
 
-export type Tab = 'listings' | 'insights';
+export type Tab = 'listings' | 'insights' | 'resources';
+
+export interface AppError {
+  type: 'api' | 'parsing' | 'network' | 'unknown';
+  message: string;
+}

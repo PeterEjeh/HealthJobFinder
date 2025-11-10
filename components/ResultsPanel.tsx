@@ -1,13 +1,14 @@
 import React from 'react';
-import type { Job, GroundingSource, Tab } from '../types';
+import type { Job, GroundingSource, Tab, AppError } from '../types';
 import { JobCard } from './JobCard';
+import { Resources } from './Resources';
 
 interface ResultsPanelProps {
   jobs: Job[];
   insights: string;
   sources: GroundingSource[];
   isLoading: boolean;
-  error: string | null;
+  error: AppError | null;
   activeTab: Tab;
   setActiveTab: (tab: Tab) => void;
 }
@@ -47,6 +48,65 @@ const SourceList: React.FC<{ sources: GroundingSource[] }> = ({ sources }) => {
   );
 };
 
+const AlertTriangleIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+);
+
+const WifiOffIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="2" x2="22" y1="2" y2="22"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 4.17-2.65"/><path d="M10.66 5c4.01-.36 8.14.9 11.34 3.76"/><path d="M16.85 11.25a10 10 0 0 1 2.22 1.68"/><path d="M5 13a10 10 0 0 1 5.24-2.76"/><path d="M12 20h.01"/></svg>
+);
+
+const CodeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+);
+
+const ErrorDisplay: React.FC<{ error: AppError }> = ({ error }) => {
+  const getErrorContent = () => {
+    switch (error.type) {
+      case 'network':
+        return {
+          icon: <WifiOffIcon className="h-6 w-6 text-yellow-500" />,
+          title: "Network Error",
+          message: error.message
+        };
+      case 'api':
+        return {
+          icon: <AlertTriangleIcon className="h-6 w-6 text-red-500" />,
+          title: "Service Unavailable",
+          message: error.message
+        };
+      case 'parsing':
+        return {
+          icon: <CodeIcon className="h-6 w-6 text-orange-500" />,
+          title: "Invalid Response",
+          message: error.message
+        };
+      case 'unknown':
+      default:
+        return {
+          icon: <AlertTriangleIcon className="h-6 w-6 text-red-500" />,
+          title: "An Error Occurred",
+          message: error.message || "Something went wrong. Please refresh the page and try again."
+        };
+    }
+  };
+
+  const { icon, title, message } = getErrorContent();
+
+  return (
+    <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-md" role="alert">
+      <div className="flex">
+        <div className="py-1">{icon}</div>
+        <div className="ml-3">
+          <p className="text-sm font-bold text-red-800">{title}</p>
+          <p className="text-sm text-red-700 mt-1">{message}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
 export const ResultsPanel: React.FC<ResultsPanelProps> = ({
   jobs,
   insights,
@@ -57,16 +117,11 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
   setActiveTab,
 }) => {
   const renderContent = () => {
-    if (isLoading) {
+    if (isLoading && (activeTab === 'listings' || activeTab === 'insights')) {
       return <LoadingSpinner />;
     }
     if (error) {
-      return (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
-          <strong className="font-bold">Error: </strong>
-          <span className="block sm:inline">{error}</span>
-        </div>
-      );
+      return <ErrorDisplay error={error} />;
     }
     if (activeTab === 'listings') {
       return jobs.length > 0 ? (
@@ -87,6 +142,9 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
       ) : (
         <EmptyState tab="insights" />
       );
+    }
+    if (activeTab === 'resources') {
+      return <Resources />;
     }
     return null;
   };
@@ -114,6 +172,16 @@ export const ResultsPanel: React.FC<ResultsPanelProps> = ({
             }`}
           >
             Market Insights
+          </button>
+          <button
+            onClick={() => setActiveTab('resources')}
+            className={`whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm ${
+              activeTab === 'resources'
+                ? 'border-cyan-500 text-cyan-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Verified Resources
           </button>
         </nav>
       </div>
