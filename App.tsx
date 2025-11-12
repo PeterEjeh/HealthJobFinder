@@ -1,34 +1,48 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { FilterPanel } from './components/FilterPanel.tsx';
-import { ResultsPanel } from './components/ResultsPanel.tsx';
-import { Header } from './components/Header.tsx';
-import type { FilterState, Job, GroundingSource, Tab, AppError } from './types.ts';
-import { findJobs, getMarketInsights } from './services/geminiService.ts';
-import { JOB_ROLES, COUNTRIES } from './constants.ts';
+import React, { useState, useEffect, useCallback } from "react";
+import { FilterPanel } from "./components/FilterPanel.tsx";
+import { ResultsPanel } from "./components/ResultsPanel.tsx";
+import { Header } from "./components/Header.tsx";
+import type {
+  FilterState,
+  Job,
+  GroundingSource,
+  Tab,
+  AppError,
+} from "./types.ts";
+import { findJobs, getMarketInsights } from "./services/geminiService.ts";
+import { JOB_ROLES, COUNTRIES } from "./constants.ts";
 
 const App: React.FC = () => {
   const [filters, setFilters] = useState<FilterState>({
-    keywords: '',
+    keywords: "",
     roles: [],
     countries: [],
+    visaSponsorshipRequired: false,
+    internationalApplicantsOnly: false,
+    datePostedFilter: "month",
   });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [insights, setInsights] = useState<string>('');
-  const [groundingSources, setGroundingSources] = useState<GroundingSource[]>([]);
+  const [insights, setInsights] = useState<string>("");
+  const [groundingSources, setGroundingSources] = useState<GroundingSource[]>(
+    []
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<AppError | null>(null);
-  const [activeTab, setActiveTab] = useState<Tab>('listings');
+  const [activeTab, setActiveTab] = useState<Tab>("listings");
 
   useEffect(() => {
-    const savedFilters = localStorage.getItem('healthJobFinderFilters');
+    const savedFilters = localStorage.getItem("healthJobFinderFilters");
     if (savedFilters) {
       const parsedFilters = JSON.parse(savedFilters);
       // Basic validation to ensure saved filters have the correct structure
       if (
-        'keywords' in parsedFilters &&
-        'roles' in parsedFilters &&
-        'countries' in parsedFilters
+        "keywords" in parsedFilters &&
+        "roles" in parsedFilters &&
+        "countries" in parsedFilters &&
+        "visaSponsorshipRequired" in parsedFilters &&
+        "internationalApplicantsOnly" in parsedFilters &&
+        "datePostedFilter" in parsedFilters
       ) {
         setFilters(parsedFilters);
       }
@@ -36,19 +50,19 @@ const App: React.FC = () => {
   }, []);
 
   const handleSaveFilters = useCallback(() => {
-    localStorage.setItem('healthJobFinderFilters', JSON.stringify(filters));
-    alert('Filters saved!');
+    localStorage.setItem("healthJobFinderFilters", JSON.stringify(filters));
+    alert("Filters saved!");
   }, [filters]);
 
   const handleSearch = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     setJobs([]);
-    setInsights('');
+    setInsights("");
     setGroundingSources([]);
 
     try {
-      if (activeTab === 'listings') {
+      if (activeTab === "listings") {
         const result = await findJobs(filters, resumeFile);
         setJobs(result.jobs);
         setGroundingSources(result.sources);
@@ -63,17 +77,33 @@ const App: React.FC = () => {
 
       if (err instanceof Error) {
         const message = err.message.toLowerCase();
-        if (message.includes('json') || message.includes('markdown')) {
-          appError = { type: 'parsing', message: "The model's response was improperly formatted. Please try again." };
-        } else if (message.includes('fetch') || message.includes('network')) {
-          appError = { type: 'network', message: "Failed to connect. Please check your internet connection." };
-        } else if (message.includes('api')) { // This could be for API key errors or service unavailable
-          appError = { type: 'api', message: "The AI service is currently unavailable or misconfigured. Please try again later." };
+        if (message.includes("json") || message.includes("markdown")) {
+          appError = {
+            type: "parsing",
+            message:
+              "The model's response was improperly formatted. Please try again.",
+          };
+        } else if (message.includes("fetch") || message.includes("network")) {
+          appError = {
+            type: "network",
+            message:
+              "Failed to connect. Please check your internet connection.",
+          };
+        } else if (message.includes("api")) {
+          // This could be for API key errors or service unavailable
+          appError = {
+            type: "api",
+            message:
+              "The AI service is currently unavailable or misconfigured. Please try again later.",
+          };
         } else {
-          appError = { type: 'unknown', message: err.message };
+          appError = { type: "unknown", message: err.message };
         }
       } else {
-        appError = { type: 'unknown', message: 'An unexpected error occurred.' };
+        appError = {
+          type: "unknown",
+          message: "An unexpected error occurred.",
+        };
       }
       setError(appError);
     } finally {

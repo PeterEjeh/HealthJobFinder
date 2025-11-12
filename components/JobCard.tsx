@@ -1,24 +1,80 @@
-import React, { useState } from 'react';
-import type { Job } from '../types.ts';
+import React, { useState } from "react";
+import type { Job } from "../types.ts";
 
 interface JobCardProps {
   job: Job;
 }
 
 const BriefcaseIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
+    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+  </svg>
 );
 
 const MapPinIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
 );
 
 const DocumentTextIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="16" y1="13" x2="8" y2="13" />
+    <line x1="16" y1="17" x2="8" y2="17" />
+    <line x1="10" y1="9" x2="8" y2="9" />
+  </svg>
 );
 
 const ShareIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
     <polyline points="16 6 12 2 8 6" />
     <line x1="12" y1="2" x2="12" y2="15" />
@@ -26,9 +82,58 @@ const ShareIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 );
 
 const CheckIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="20 6 9 17 4 12" />
-    </svg>
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+);
+
+const CalendarIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+    <path d="M16 2v4" />
+    <path d="M8 2v4" />
+    <path d="M3 10h18" />
+  </svg>
+);
+
+const ShieldCheckIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg
+    {...props}
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    <polyline points="9 12 12 15 15 9" />
+  </svg>
 );
 
 export const JobCard: React.FC<JobCardProps> = ({ job }) => {
@@ -40,8 +145,8 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
     } catch (err) {
-      console.error('Failed to copy link: ', err);
-      alert('Failed to copy link.');
+      console.error("Failed to copy link: ", err);
+      alert("Failed to copy link.");
     }
   };
 
@@ -64,7 +169,9 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
         <div className="mt-4 sm:mt-0 sm:ml-4 flex items-center gap-2 flex-shrink-0">
           <button
             onClick={handleShare}
-            className={`inline-flex items-center gap-2 bg-slate-100 text-slate-700 font-semibold py-2 px-4 rounded-full hover:bg-slate-200 transition-colors text-sm whitespace-nowrap ${isCopied ? 'bg-green-100 text-green-800' : ''}`}
+            className={`inline-flex items-center gap-2 bg-slate-100 text-slate-700 font-semibold py-2 px-4 rounded-full hover:bg-slate-200 transition-colors text-sm whitespace-nowrap ${
+              isCopied ? "bg-green-100 text-green-800" : ""
+            }`}
             aria-label="Share job link"
           >
             {isCopied ? (
@@ -93,15 +200,65 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
         {job.description}
       </p>
 
+      {/* Job metadata */}
+      <div className="mt-4 pt-4 border-t border-slate-200">
+        <div className="flex flex-wrap gap-4 text-xs text-slate-600 mb-4">
+          <div className="flex items-center gap-1.5">
+            <CalendarIcon className="h-4 w-4 text-slate-400" />
+            <span>
+              Posted {job.daysAgo} day{job.daysAgo !== 1 ? "s" : ""} ago
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="font-medium">Source:</span>
+            <span className="bg-slate-100 px-2 py-0.5 rounded">
+              {job.source}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="font-medium">Verification:</span>
+            <span
+              className={`px-2 py-0.5 rounded text-xs font-medium ${
+                job.verificationStatus === "verified"
+                  ? "bg-green-100 text-green-800"
+                  : job.verificationStatus === "likely"
+                  ? "bg-blue-100 text-blue-800"
+                  : "bg-yellow-100 text-yellow-800"
+              }`}
+            >
+              {job.verificationStatus}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2 mb-4">
+          {job.visaSponsorshipAvailable && (
+            <span className="inline-flex items-center gap-1 bg-green-100 text-green-800 text-xs font-semibold px-3 py-1.5 rounded-full">
+              <ShieldCheckIcon className="h-4 w-4" />
+              Visa Sponsorship Available
+            </span>
+          )}
+          {job.internationalApplicantsWelcome && (
+            <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 text-xs font-semibold px-3 py-1.5 rounded-full">
+              <CheckIcon className="h-4 w-4" />
+              International Applicants Welcome
+            </span>
+          )}
+        </div>
+      </div>
+
       {job.requiredDocuments && job.requiredDocuments.length > 0 && (
         <div className="mt-4 pt-4 border-t border-slate-200">
           <h4 className="flex items-center gap-2 text-sm font-semibold text-slate-600 mb-2">
             <DocumentTextIcon className="h-4 w-4" />
-            Required Documents
+            Required Documents for International Applicants
           </h4>
           <div className="flex flex-wrap gap-2">
             {job.requiredDocuments.map((doc, index) => (
-              <span key={index} className="bg-slate-100 text-slate-700 text-xs font-medium px-2.5 py-1 rounded-full">
+              <span
+                key={index}
+                className="bg-slate-100 text-slate-700 text-xs font-medium px-2.5 py-1 rounded-full"
+              >
                 {doc}
               </span>
             ))}
